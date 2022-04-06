@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Busca PET</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <h2>Busca PET</h2>
+
+    <div>
+        <input type="text" placeholder="Search.." id="search">
+        <button id="searchButton" onclick="searchButton()">Buscar</button>
+        <p>Busca detalhada <br /></p>
+        <label>Texto da deliberação
+            <input id="checkText" type="checkbox" checked="checked">
+        </label>
+        <label>Nome do GDT
+            <input id="checkNameGDT" type="checkbox">
+        </label>
+        <label> A quem é destinado a deliberação
+            <input id="checkWho" type="checkbox">
+        </label>
+        <label> Onde deverá ser realizada a deliberação
+            <input id="checkWhere" type="checkbox">
+        </label>
+        <label> Quando deverá ser realizada a deliberação
+            <input id="checkWhen" type="checkbox">
+        </label>
+        <label> Tipo de deliberação
+            <input id="checkType" type="checkbox">
+        </label>
+        <label> Status final
+            <input id="checkStatus" type="checkbox">
+        </label>
+        <label> Email dos responsáveis
+            <input id="checkEmail" type="checkbox">
+        </label>
+        <label> Nome dos autores
+            <input id="checkNameAuthor" type="checkbox">
+        </label>
+        <label> Nome do evento
+            <input id="checkNameEvent" type="checkbox">
+        </label>
+        <label> Título do evento
+            <input id="checkTitleEvent" type="checkbox">
+        </label>
+        <label> Ano
+            <input id="checkYear" type="checkbox">
+        </label>
+        <label> Mês
+            <input id="checkMonth" type="checkbox">
+        </label>
+
+
+    </div>
+
+    <table id="output">
+        <tr>
+        </tr>
+    </table>
+
+    <script src="client.js" charset="utf-8"></script>
+</body>
+
+</html>
