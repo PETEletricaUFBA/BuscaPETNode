@@ -17,6 +17,7 @@ let checkboxNameEvent = document.getElementById('checkNameEvent');
 let checkboxTitleEvent = document.getElementById('checkTitleEvent');
 let checkboxYear = document.getElementById('checkYear');
 let checkboxMonth = document.getElementById('checkMonth');
+let checkboxKey = document.getElementById('checkKey');
 
 function searchButton() {
     if (checkboxText.checked ||
@@ -31,26 +32,13 @@ function searchButton() {
         checkboxNameEvent.checked ||
         checkboxTitleEvent.checked ||
         checkboxYear.checked ||
-        checkboxMonth.checked) {
+        checkboxMonth.checked ||
+        checkboxKey.checked) {
     try {
         while (output.hasChildNodes()) {
             output.removeChild(output.firstChild);
         };
-        output.innerHTML = ` <tr>
-            <th>Texto</th>
-            <th>Nome do GDT</th>
-            <th>Quem</th>
-            <th>Onde</th>
-            <th>Quando</th>
-            <th>Tipo Deliberação</th>
-            <th>Deliberação Final</th>
-            <th>Responsáveis</th>
-            <th>Autores</th>
-            <th>Evento</th>
-            <th>Título do Evento</th>
-            <th>Ano</th>
-            <th>Mês</th>
-        </tr> `;
+        
         var xhr = new XMLHttpRequest;
 
         xhr.onreadystatechange = function () {
@@ -59,7 +47,7 @@ function searchButton() {
             }
         };
 
-        let urlGet = `/search?text=${search.value}&textCheck=${checkboxText.checked}&nameGDT=${checkboxNameGDT.checked}&who=${checkboxWho.checked}&where=${checkboxWhere.checked}&when=${checkboxWhen.checked}&type=${checkboxType.checked}&status=${checkboxStatus.checked}&email=${checkboxEmail.checked}&nameAuthor=${checkboxNameAuthor.checked}&nameEvent=${checkboxNameEvent.checked}&titleEvent=${checkboxTitleEvent.checked}&year=${checkboxYear.checked}&month=${checkboxMonth.checked}`;
+        let urlGet = `/search?text=${search.value}&textCheck=${checkboxText.checked}&nameGDT=${checkboxNameGDT.checked}&who=${checkboxWho.checked}&where=${checkboxWhere.checked}&when=${checkboxWhen.checked}&type=${checkboxType.checked}&status=${checkboxStatus.checked}&email=${checkboxEmail.checked}&nameAuthor=${checkboxNameAuthor.checked}&nameEvent=${checkboxNameEvent.checked}&titleEvent=${checkboxTitleEvent.checked}&year=${checkboxYear.checked}&month=${checkboxMonth.checked}&key=${checkboxKey.checked}`;
         xhr.open('GET', urlGet, true);
         xhr.send();
     }

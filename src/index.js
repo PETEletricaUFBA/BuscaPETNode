@@ -7,7 +7,8 @@ const DOTENV = process.env;
 
 const port = DOTENV.PORT;
 
-app.use(express.static(path.join(__dirname, 'public'))); // Usa a pasta public para servir os arquivos estáticos
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] })); // Usa a pasta public para servir os arquivos estáticos
+app.use(express.static(__dirname + '/../node_modules/bootstrap/dist'));
 
 let config = {  // Configurações do banco de dados
     host: DOTENV.DB_HOST,
@@ -30,33 +31,8 @@ app.get('/:search?', async function (req, res) {// Busca os dados no banco de da
 });
 
 app.listen(port, () => {
-    // console.log(`App listening on port ${port}`);
+    console.log(`App listening on port ${port}`);
 });
-
-function searchTermQuery(searchTerm, filters) { // Retorna a query para buscar os dados no banco de dados
-    // TODO: Proteger contra SQL Injection
-    // TODO: Acrescentar Indice na busca
-    
-    let query = "SELECT * FROM trabalhospet WHERE ";
-
-    query += (filters.textCheck == 'true') ? "Texto LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.nameGDT == 'true') ? "NomeGDT LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.who == 'true') ? "Quem LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.where == 'true') ? "Onde LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.when == 'true') ? "Quando LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.type == 'true') ? "TipoDeliberacao LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.status == 'true') ? "DeliberacaoFinal LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.email == 'true') ? "EmailResponsaveis LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.nameAuthor == 'true') ? "NomeAutores LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.nameEvent == 'true') ? "NomeEvento LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.titleEvent == 'true') ? "TituloEvento LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.year == 'true') ? "Ano LIKE '%" + searchTerm + "%' OR " : "";
-    query += (filters.month == 'true') ? "Mes LIKE '%" + searchTerm + "%' OR " : "";
-
-    query = query.substring(0, query.length - 3); // Remove o ultimo OR
-
-    return query;
-}
 
 async function asyncSearch(searchQuery) {
 
@@ -65,7 +41,10 @@ async function asyncSearch(searchQuery) {
     try {
 
         // Trata a string para ajeitar a busca
-        searchString = searchQuery.text.trim().normalize('NFD').replace(/(<([^>]+)>)/gi, "");
+        // searchString = searchQuery.text.trim().normalize('NFD').replace(/(<([^>]+)>)/gi, "");
+        searchString = searchQuery.text.trim();
+
+        // searchString = searchQuery.text.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/gi, ' ');
 
         let searchTerms = [];
         searchTerms.push(searchString);
@@ -81,9 +60,8 @@ async function asyncSearch(searchQuery) {
 
         let results = [];
         for (let i = 0; i < searchTerms.length; i++) {
-            let query = await searchTermQuery(searchTerms[i], searchQuery);
 
-            results = await queryToTable(results, query);
+            results = await queryToTable(results, searchTerms[i], searchQuery);
         };
 
         for (let j = 0; j < results.length; j++) {
@@ -97,33 +75,46 @@ async function asyncSearch(searchQuery) {
     }
 };
 
-async function queryToTable(data, sql) {
+async function queryToTable(data, searchTerm, filters) {
     try {
 
         // Cria conexão com o banco de dados
         conn = await mariadb.createConnection(config);
 
-        let rows = await conn.query(sql);
+        let term = conn.escape("%" + searchTerm + "%"); // Escapa o termo para proteger de SQL Injection
+
+        let queryTerm = await searchTermQuery(term, filters);
+
+        let rows = await conn.query(queryTerm);
 
         conn.end();
 
         // Converte os dados para TableHTML
         for (let i = 0; i < rows.length; i++) {
-            let aux = "<tr> \n";
-            aux += "<td>" + rows[i].Texto + "</td> \n";
-            aux += "<td>" + rows[i].NomeGDT + "</td> \n";
-            aux += "<td>" + rows[i].Quem + "</td> \n";
-            aux += "<td>" + rows[i].Onde + "</td> \n";
-            aux += "<td>" + rows[i].Quando + "</td> \n";
-            aux += "<td>" + rows[i].TipoDeliberacao + "</td> \n";
-            aux += "<td>" + rows[i].DeliberacaoFinal + "</td> \n";
-            aux += "<td>" + rows[i].EmailResponsaveis + "</td> \n";
-            aux += "<td>" + rows[i].NomeAutores + "</td> \n";
-            aux += "<td>" + rows[i].NomeEvento + "</td> \n";
-            aux += "<td>" + rows[i].TituloEvento + "</td> \n";
-            aux += "<td>" + rows[i].Ano + "</td> \n";
-            aux += "<td>" + rows[i].Mes + "</td> \n";
-            aux += "</tr> \n";
+            let aux = '<div class="container-fluid border border-primary rounded"> \n';
+            aux += '<div class="row "> \n';
+            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].Key + '</div> \n';
+            aux += '<div class="col-7 border py-2 text-center">' + rows[i].NomeEvento + '-' + rows[i].TituloEvento + '</div> \n';
+            aux += '<div class="col border py-2 text-center">' + rows[i].NomeGDT + '</div> \n';
+            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].Ano + '</div> \n';
+            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].Mes + '</div> \n';
+            aux += '</div> \n';
+            aux += '<div class="row"> \n';
+            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].TipoDeliberacao + '</div> \n';
+            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].DeliberacaoFinal + '</div> \n';
+            aux += '<div class="col border py-2 text-center">' + rows[i].Quem + '</div> \n';
+            aux += '<div class="col border py-2 text-center">' + rows[i].Onde + '</div> \n';
+            aux += '<div class="col border py-2 text-center">' + rows[i].Quando + '</div> \n';
+            aux += "</div> \n";
+            aux += '<div class="row"> \n';
+            aux += '<div class="col py-2">' + rows[i].Texto + '</div> \n';
+            aux += "</div> \n";
+            aux += '<div class="row"> \n';
+            aux += '<div class="col-8 border py-2 text-center">' + rows[i].EmailResponsaveis + '</div> \n';
+            aux += '<div class="col border py-2">' + rows[i].NomeAutores.replace(/,/g, "<br>") + '</div> \n';
+            aux += "</div> \n";
+            aux += '</div> \n';
+
             if (data.includes(aux) == false) {
                 data.push(aux);
             }
@@ -134,4 +125,28 @@ async function queryToTable(data, sql) {
         console.log(error);
         reject(error);
     }
+};
+
+function searchTermQuery(searchTerm, filters) { // Monta a query para buscar o termo
+
+    let query = "SELECT * FROM trabalhospet WHERE ";
+
+    query += (filters.key == 'true') ? "`Key` LIKE " + searchTerm + " OR " : "";
+    query += (filters.textCheck == 'true') ? "Texto LIKE " + searchTerm + " OR " : "";
+    query += (filters.nameGDT == 'true') ? "NomeGDT LIKE " + searchTerm + " OR " : "";
+    query += (filters.who == 'true') ? "Quem LIKE " + searchTerm + " OR " : "";
+    query += (filters.where == 'true') ? "Onde LIKE " + searchTerm + " OR " : "";
+    query += (filters.when == 'true') ? "Quando LIKE " + searchTerm + " OR " : "";
+    query += (filters.type == 'true') ? "TipoDeliberacao LIKE " + searchTerm + " OR " : "";
+    query += (filters.status == 'true') ? "DeliberacaoFinal LIKE " + searchTerm + " OR " : "";
+    query += (filters.email == 'true') ? "EmailResponsaveis LIKE " + searchTerm + " OR " : "";
+    query += (filters.nameAuthor == 'true') ? "NomeAutores LIKE " + searchTerm + " OR " : "";
+    query += (filters.nameEvent == 'true') ? "NomeEvento LIKE " + searchTerm + " OR " : "";
+    query += (filters.titleEvent == 'true') ? "TituloEvento LIKE " + searchTerm + " OR " : "";
+    query += (filters.year == 'true') ? "Ano LIKE " + searchTerm + " OR " : "";
+    query += (filters.month == 'true') ? "Mes LIKE " + searchTerm + " OR " : ""; 
+
+    query = query.substring(0, query.length - 3); // Remove o ultimo OR
+
+    return query;
 };

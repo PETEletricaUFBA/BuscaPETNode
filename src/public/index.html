@@ -6,63 +6,93 @@
     <title>Busca PET</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <script language="javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
 </head>
 
 <body>
-    <h2>Busca PET</h2>
+    <h2 class="text-center mt-5">Busca PET</h2>
 
-    <div>
-        <input type="text" placeholder="Search.." id="search">
-        <button id="searchButton" onclick="searchButton()">Buscar</button>
-        <p>Busca detalhada <br /></p>
-        <label>Texto da deliberação
-            <input id="checkText" type="checkbox" checked="checked">
-        </label>
-        <label>Nome do GDT
-            <input id="checkNameGDT" type="checkbox">
-        </label>
-        <label> A quem é destinado a deliberação
-            <input id="checkWho" type="checkbox">
-        </label>
-        <label> Onde deverá ser realizada a deliberação
-            <input id="checkWhere" type="checkbox">
-        </label>
-        <label> Quando deverá ser realizada a deliberação
-            <input id="checkWhen" type="checkbox">
-        </label>
-        <label> Tipo de deliberação
-            <input id="checkType" type="checkbox">
-        </label>
-        <label> Status final
-            <input id="checkStatus" type="checkbox">
-        </label>
-        <label> Email dos responsáveis
-            <input id="checkEmail" type="checkbox">
-        </label>
-        <label> Nome dos autores
-            <input id="checkNameAuthor" type="checkbox">
-        </label>
-        <label> Nome do evento
-            <input id="checkNameEvent" type="checkbox">
-        </label>
-        <label> Título do evento
-            <input id="checkTitleEvent" type="checkbox">
-        </label>
-        <label> Ano
-            <input id="checkYear" type="checkbox">
-        </label>
-        <label> Mês
-            <input id="checkMonth" type="checkbox">
-        </label>
+    <div class="container">
+        <div class="container py-3 d-flex justify-content-center">
+            <input type="text" placeholder="Search.." id="search">
+            <button id="searchButton" onclick="searchButton()">Buscar</button>
+        </div>
 
 
+
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <a class="col-md-auto" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Busca detalhada
+                </a>
+            </div>
+
+
+            <div class="collapse" id="collapseExample">
+                <div class="row">
+                    <div class="col-md-auto d-flex flex-column justify-content-start">
+                        <label>Texto da deliberação
+                            <input id="checkText" type="checkbox" checked="checked">
+                        </label>
+                        <label> Nome do evento
+                            <input id="checkNameEvent" type="checkbox">
+                        </label>
+                            <label> Título do evento
+                                <input id="checkTitleEvent" type="checkbox">
+                            </label>
+                            <label> Numero da deliberação
+                                <input id="checkKey" type="checkbox">
+                            </label>
+
+                    </div>
+                    <div class="col-md-auto  d-flex flex-column justify-content-start">
+                        <label> A quem é destinado a deliberação
+                            <input id="checkWho" type="checkbox">
+                        </label>
+                        <label> Onde deverá ser realizada a deliberação
+                            <input id="checkWhere" type="checkbox">
+                        </label>
+                        <label> Quando deverá ser realizada a deliberação
+                            <input id="checkWhen" type="checkbox">
+                        </label>
+
+                    </div>
+                    <div class="col-md-auto  d-flex flex-column justify-content-start">
+                        <label> Tipo de deliberação
+                            <input id="checkType" type="checkbox">
+                        </label>
+                        <label> Status final
+                            <input id="checkStatus" type="checkbox">
+                        </label>
+                        <label> Email dos responsáveis
+                            <input id="checkEmail" type="checkbox">
+                        </label>
+                        <label> Nome dos autores
+                            <input id="checkNameAuthor" type="checkbox">
+                        </label>
+                    </div>
+                    <div class="col-md-auto d-flex flex-column justify-content-start">
+                        <label>Nome do GDT
+                            <input id="checkNameGDT" type="checkbox">
+                        </label>
+                        <label> Ano
+                            <input id="checkYear" type="checkbox">
+                        </label>
+                        <label> Mês
+                            <input id="checkMonth" type="checkbox">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <table id="output">
-        <tr>
-        </tr>
-    </table>
+
+    <div class="container-fluid d-grid my-2" id="output">
+    </div>
 
     <script src="client.js" charset="utf-8"></script>
 </body>
