@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Busca PET - Admin</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script language="javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="icon" type="image/x-icon" href="assets/imgs/favicon.svg">
+</head>
+
+<body>
+    <!--TODO: Login (Implementar sistema de segurança para senha)
+        TODO: Submissão individual de deliberação, com proteção contra SQL Injection e tela de confirmação
+        TODO: Submissão em massa, utilizando arquivo .csv, com tabela de confirmação. -->
+    <div>
+        <!-- Login Forms -->
+        <form action="" method="post">
+            <h2 class="form-signin-heading">Login</h2>
+            <label for="inputEmail">Email address</label>
+            <input type="email" id="inputEmail" name="email" placeholder="Email address" required>
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" name="senha" placeholder="Password" required>
+            <div>
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button type="submit">Sign in</button>
+        </form>
+        <a href="signup">Cadastre-se</a>
+        
+    </div>
+
+
+</body>
+
+</html>

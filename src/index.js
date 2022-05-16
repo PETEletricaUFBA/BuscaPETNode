@@ -1,14 +1,17 @@
 const express = require('express');
 const path = require('path');
-const app = express();
 const mariadb = require('mariadb');
+const bodyParser = require('body-parser');
 
 const DOTENV = process.env;
+
+const app = express();
 
 const port = DOTENV.PORT;
 
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] })); // Usa a pasta public para servir os arquivos estáticos
 app.use(express.static(__dirname + '/../node_modules/bootstrap/dist'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 let config = {  // Configurações do banco de dados
     host: DOTENV.DB_HOST,
@@ -26,8 +29,31 @@ app.get('/:search?', async function (req, res) {// Busca os dados no banco de da
 
     let output = await asyncSearch(searchQuery);
 
-
     res.send(output);   // Envia os dados para o client.js
+});
+
+app.post('/signup/', async function (req, res) {
+    try {
+        conn = await mariadb.createConnection(config);
+        let row = await conn.query("SELECT * FROM users WHERE Email = ?", [req.body.email]);
+        if (row.length > 0) {
+            conn.end();
+            res.send("Email already exists");
+        } else {
+            let row = await conn.query("SELECT * FROM users WHERE username = ?", [req.body.username]);
+            if (row.length > 0) {
+            conn.end();
+            res.send("Username already exists");
+        } else {
+            let query = "INSERT INTO users (username, hash, email, pet) VALUES (?, ?, ?, ?)";
+            await conn.query(query, [req.body.username, stringToHash(req.body.password + req.body.username), req.body.email, req.body.pet]);
+            conn.end();
+            res.send("User created");
+        }}
+    } catch (err) {
+        console.log(err);
+        res.send("Caminar!");
+    }
 });
 
 app.listen(port, () => {
@@ -144,9 +170,25 @@ function searchTermQuery(searchTerm, filters) { // Monta a query para buscar o t
     query += (filters.nameEvent == 'true') ? "NomeEvento LIKE " + searchTerm + " OR " : "";
     query += (filters.titleEvent == 'true') ? "TituloEvento LIKE " + searchTerm + " OR " : "";
     query += (filters.year == 'true') ? "Ano LIKE " + searchTerm + " OR " : "";
-    query += (filters.month == 'true') ? "Mes LIKE " + searchTerm + " OR " : ""; 
+    query += (filters.month == 'true') ? "Mes LIKE " + searchTerm + " OR " : "";
 
     query = query.substring(0, query.length - 3); // Remove o ultimo OR
 
     return query;
 };
+
+function stringToHash(string) {
+    // Converte uma string para um hash
+    // TODO: Implementar algoritmo de hash
+    let hash = 0;
+      
+    if (string.length == 0) return hash;
+      
+    for (i = 0; i < string.length; i++) {
+        char = string.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+      
+    return hash;
+}
