@@ -106,7 +106,8 @@ async function queryToTable(data, searchTerm, filters) {
     try {
 
         // Cria conexão com o banco de dados
-        conn = await mariadb.createConnection(config);
+        // conn = await mariadb.createConnection(config);
+        conn = await mariadb.createConnection(process.env.JAWSDB_MARIA_URL);
 
         let term = conn.escape("%" + searchTerm + "%"); // Escapa o termo para proteger de SQL Injection
 
