@@ -34,8 +34,8 @@ app.get('/:search?', async function (req, res) {// Busca os dados no banco de da
 
 app.post('/signup/', async function (req, res) {
     try {
-        // conn = await mariadb.createConnection(config);
-        conn = await mariadb.createConnection(process.env.JAWSDB_MARIA_URL);
+        conn = await mariadb.createConnection(config);
+
         let row = await conn.query("SELECT * FROM users WHERE Email = ?", [req.body.email]);
         if (row.length > 0) {
             conn.end();
@@ -106,8 +106,7 @@ async function queryToTable(data, searchTerm, filters) {
     try {
 
         // Cria conexão com o banco de dados
-        // conn = await mariadb.createConnection(config);
-        conn = await mariadb.createConnection(process.env.JAWSDB_MARIA_URL);
+        conn = await mariadb.createConnection(config);
 
         let term = conn.escape("%" + searchTerm + "%"); // Escapa o termo para proteger de SQL Injection
 
