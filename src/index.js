@@ -34,7 +34,8 @@ app.get('/:search?', async function (req, res) {// Busca os dados no banco de da
 
 app.post('/signup/', async function (req, res) {
     try {
-        conn = await mariadb.createConnection(config);
+        // conn = await mariadb.createConnection(config);
+        conn = await mariadb.createConnection(process.env.JAWSDB_MARIA_URL);
         let row = await conn.query("SELECT * FROM users WHERE Email = ?", [req.body.email]);
         if (row.length > 0) {
             conn.end();
