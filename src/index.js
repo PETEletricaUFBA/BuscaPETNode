@@ -79,7 +79,7 @@ async function asyncSearch(searchQuery) {
         searchString.split(" ").forEach(term => {
             term = term.replace(/[^a-z0-9]/gi, '');
 
-            if (term.length > 2) { // Filtra palavras com menos de 3 caracteres
+            if (term.length > 3) { // Filtra palavras com menos de 3 caracteres
                 searchTerms.push(term);
             }
         });
@@ -118,28 +118,28 @@ async function queryToTable(data, searchTerm, filters) {
 
         // Converte os dados para TableHTML
         for (let i = 0; i < rows.length; i++) {
-            let aux = '<div class="container-fluid border border-primary rounded"> \n';
+            let aux = '<div class="deliberacao container-fluid border border-primary rounded"> \n';
             aux += '<div class="row "> \n';
-            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].Key + '</div> \n';
-            aux += '<div class="col-7 border py-2 text-center">' + rows[i].NomeEvento + '-' + rows[i].TituloEvento + '</div> \n';
-            aux += '<div class="col border py-2 text-center">' + rows[i].NomeGDT + '</div> \n';
-            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].Ano + '</div> \n';
-            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].Mes + '</div> \n';
+            aux += '<div class="col-7 border py-2 text-center"> <b>Evento:</b> ' + rows[i].NomeEvento + '-' + rows[i].TituloEvento + '</div> \n';
+            aux += '<div class="col border py-2 text-center"> <b>' + rows[i].NomeGDT + '</b></div> \n';
+            aux += '<div class="col-md-auto border py-2 text-center"> <b>Realizado em:</b> ' + rows[i].Mes + " de "+ rows[i].Ano + '</div> \n';
             aux += '</div> \n';
+            aux += '<div class="row"> \n <div class="col py-2"> <h3> <b>Deliberação</b></h3></div> \n </div> \n';
             aux += '<div class="row"> \n';
-            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].TipoDeliberacao + '</div> \n';
-            aux += '<div class="col-md-auto border py-2 text-center">' + rows[i].DeliberacaoFinal + '</div> \n';
-            aux += '<div class="col border py-2 text-center">' + rows[i].Quem + '</div> \n';
-            aux += '<div class="col border py-2 text-center">' + rows[i].Onde + '</div> \n';
-            aux += '<div class="col border py-2 text-center">' + rows[i].Quando + '</div> \n';
+            aux += '<div class="col-md-auto border py-2 text-center"><b>Tipo:</b> ' + rows[i].TipoDeliberacao + '</div> \n';
+            aux += '<div class="col-md-auto border py-2 text-center"><b>Status:</b> ' + rows[i].DeliberacaoFinal + '</div> \n';
+            aux += '<div class="col border py-2 text-center"><b>Destinatário:</b> ' + rows[i].Quem + '</div> \n';
+            aux += '<div class="col-md-auto border py-2"><b>Autor:</b> ' + rows[i].NomeAutores.replace(/,/g, "<br>") + '</div> \n';
+            // aux += '<div class="col border py-2 text-center">' + rows[i].Onde + '</div> \n';
+            // aux += '<div class="col border py-2 text-center">' + rows[i].Quando + '</div> \n';
             aux += "</div> \n";
             aux += '<div class="row"> \n';
-            aux += '<div class="col py-2">' + rows[i].Texto + '</div> \n';
+            aux += '<div class="col py-2"><p>' + rows[i].Texto + '</p></div> \n';
             aux += "</div> \n";
-            aux += '<div class="row"> \n';
-            aux += '<div class="col-8 border py-2 text-center">' + rows[i].EmailResponsaveis + '</div> \n';
-            aux += '<div class="col border py-2">' + rows[i].NomeAutores.replace(/,/g, "<br>") + '</div> \n';
-            aux += "</div> \n";
+            // aux += '<div class="row"> \n';
+            // aux += '<div class="col-8 border py-2 text-center">' + rows[i].EmailResponsaveis + '</div> \n';
+
+            // aux += "</div> \n";
             aux += '</div> \n';
 
             if (data.includes(aux) == false) {
@@ -158,7 +158,6 @@ function searchTermQuery(searchTerm, filters) { // Monta a query para buscar o t
 
     let query = "SELECT * FROM trabalhospet WHERE ";
 
-    query += (filters.key == 'true') ? "`Key` LIKE " + searchTerm + " OR " : "";
     query += (filters.textCheck == 'true') ? "Texto LIKE " + searchTerm + " OR " : "";
     query += (filters.nameGDT == 'true') ? "NomeGDT LIKE " + searchTerm + " OR " : "";
     query += (filters.who == 'true') ? "Quem LIKE " + searchTerm + " OR " : "";

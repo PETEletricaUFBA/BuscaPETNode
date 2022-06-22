@@ -6,93 +6,234 @@
     <title>Busca PET</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script language="javascript" src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- <script language="javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="index.css" />
     <link rel="icon" type="image/x-icon" href="assets/imgs/favicon.svg">
 </head>
 
 <body>
-    <h2 class="text-center mt-5">Busca PET</h2>
-
-    <div class="container">
-        <div class="container py-3 d-flex justify-content-center">
-            <input type="text" placeholder="Search.." id="search">
-            <button id="searchButton" onclick="doSearch()">Buscar</button>
+    <header class="header">
+        <div class="header-content max-width">
+            <div class="identity center">
+                <div class="combo">
+                    <a target="" title="Busca dadoPET" href="">
+                        <!-- TODO: Logo do BuscaPET -->
+                        <img src="" alt="Busca dadoPET" title="Busca dadoPET">
+                    </a>
+                </div>
+                <div class="logo">
+                    <a href="https://cenapet.org/" target="_blank" title="CENAPET"> </a>
+                </div>
+            </div>
         </div>
+    </header>
+    <div class="content-wrapper">
+        <div class="main-content max-width  min-width center">
+            <div class="layout-cell layout-cell-12" id="searchPage">
+                <div class="layout-cell-pad-main">
+                    <div class="layout-cell layout-cell-6">
+                        <div class="layout-cell-pad">
+                            <div class="title-wrapper" id="tit_busca_simples">
+                                <h1 tabindex="0">Buscar Deliberação</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-cell layout-cell-12" id="busca_simples">
+                        <hr class="separator">
+                        <br><br>
+                        <fieldset>
+                            <legend class="tit_form geral-buscarpor" id="legendBuscarPor">Buscar por:</legend>
+                            <div class="layout-cell-pad ">
+                                <div class="sub_tit_form">
+                                    <fieldset>
+                                        <legend class="geral-selecione" id="legendSelecione">
+                                            Campo de busca
+                                        </legend>
+                                        <div class="input-checkbox">
+
+                                            <label>
+                                                <input id="checkText" type="checkbox" checked="checked"> Texto da
+                                                deliberação
+                                            </label>
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <input class="input-text" type="text" placeholder="Search.." id="search">
+                                <br class="clear">
+                                <div class="sub_tit_form">
+                                    <div class="layout-cell layout-cell-12">
+                                        <div class="layout-cell-pad">
+                                            <div class="layout-cell layout-cell-3">
+                                                <div class="layout-cell-pad">
+                                                    <fieldset>
+                                                        <!-- TODO: Implementar Abrangência no banco de dados     -->
+                                                        <legend id="legendNacionalidade"> Abrangência: </legend>
+                                                        <br>
+                                                        <input type="checkbox" name="buscarBrasileiros" value="true"
+                                                            checked="checked" id="buscarBrasileiros"
+                                                            aria-labelledby="legendNacionalidade" role="menuitem">
+                                                        <label for="buscarBrasileiros">Local</label>&nbsp;&nbsp;
+                                                        <input type="checkbox" name="buscarEstrangeiros" value="true"
+                                                            checked="checked" id="buscarEstrangeiros" role="menuitem">
+                                                        <label for="buscarEstrangeiros">Regional</label>
+                                                        <input type="checkbox" name="buscarEstrangeiros" value="true"
+                                                            checked="checked" id="buscarEstrangeiros" role="menuitem">
+                                                        <label for="buscarEstrangeiros">Nacional</label>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <hr class="separator">
+                    </div>
 
 
+                    <div class="layout-cell layout-cell-12 ">
+                        <div class="layout-cell-pad">
+                            <div class="control-bar-wrapper button-tab">
+                                <br>
+                                <h3 class="tit_form" tabindex="0">
+                                    Filtros
+                                </h3>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <a class="col-md-auto" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                    aria-expanded="false" aria-controls="collapseExample">
-                    Busca detalhada
-                </a>
+                    <!-- Filtros -->
+                    <div class="conteudo1 layout-cell layout-cell-12">
+                        <div class="cont layout-cell-pad" style="display: block;">
+                            <div class="layout-cell layout-cell-3">
+                                <div class="layout-cell-pad">
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkNameEvent" type="checkbox"> Nome do evento
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkTitleEvent" type="checkbox"> Título do evento
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkWho" type="checkbox"> A quem é destinado a deliberação
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkWhere" type="checkbox"> Onde deverá ser realizada a
+                                            deliberação
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkWhen" type="checkbox"> Quando deverá ser realizada a
+                                            deliberação
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!---->
+                            <div class="layout-cell layout-cell-9">
+                                <div class="layout-cell-pad">
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkType" type="checkbox"> Tipo de deliberação
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkStatus" type="checkbox"> Status final
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkEmail" type="checkbox"> Email dos responsáveis
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkNameAuthor" type="checkbox"> Nome dos autores
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkNameGDT" type="checkbox"> Nome do GDT
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkYear" type="checkbox"> Ano
+                                        </label>
+                                    </div>
+                                    <div class="layout-cell-pad">
+                                        <label>
+                                            <input id="checkMonth" type="checkbox"> Mês
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FIM CONTEUDO BOTAO PREFERENCIAS-->
+
+                    <!-- BOTAO Buscar -->
+
+                    <br class="clear">
+
+                    <div class="layout-cell layout-cell-12">
+                        <div class="layout-cell-pad">
+                            <div class="control-bar-wrapper">
+                                <a class="button" id="botaoBuscaFiltros" href="javascript:void(0)" onclick="doSearch()">
+                                    <span class="mini-ico mini-ico-lupa"></span>Buscar
+                                </a>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-
-            <div class="collapse" id="collapseExample">
+        </div>
+        <div class="container-output" id="output">
+            <div class="container-fluid border border-primary rounded" style="display:none;">
+                <div class="row ">
+                    <div class="col-md-auto border py-2 text-center">42</div>
+                    <div class="col-7 border py-2 text-center">-Omnibus editions</div>
+                    <div class="col border py-2 text-center">The Hitchhiker's Guide to the Galaxy</div>
+                    <div class="col-md-auto border py-2 text-center">1942</div>
+                    <div class="col-md-auto border py-2 text-center">Outubro</div>
+                </div>
                 <div class="row">
-                    <div class="col-md-auto d-flex flex-column justify-content-start">
-                        <label>Texto da deliberação
-                            <input id="checkText" type="checkbox" checked="checked">
-                        </label>
-                        <label> Nome do evento
-                            <input id="checkNameEvent" type="checkbox">
-                        </label>
-                            <label> Título do evento
-                                <input id="checkTitleEvent" type="checkbox">
-                            </label>
-                            <label> Numero da deliberação
-                                <input id="checkKey" type="checkbox">
-                            </label>
-
+                    <div class="col-md-auto border py-2 text-center">Encaminhamento</div>
+                    <div class="col-md-auto border py-2 text-center">Aprovado</div>
+                    <div class="col border py-2 text-center">Humans</div>
+                    <div class="col border py-2 text-center">Planet Earth</div>
+                    <div class="col border py-2 text-center">1978</div>
+                </div>
+                <div class="row">
+                    <div class="col py-2">Answer to the Ultimate Question of Life, the Universe, and Everything.
                     </div>
-                    <div class="col-md-auto  d-flex flex-column justify-content-start">
-                        <label> A quem é destinado a deliberação
-                            <input id="checkWho" type="checkbox">
-                        </label>
-                        <label> Onde deverá ser realizada a deliberação
-                            <input id="checkWhere" type="checkbox">
-                        </label>
-                        <label> Quando deverá ser realizada a deliberação
-                            <input id="checkWhen" type="checkbox">
-                        </label>
-
-                    </div>
-                    <div class="col-md-auto  d-flex flex-column justify-content-start">
-                        <label> Tipo de deliberação
-                            <input id="checkType" type="checkbox">
-                        </label>
-                        <label> Status final
-                            <input id="checkStatus" type="checkbox">
-                        </label>
-                        <label> Email dos responsáveis
-                            <input id="checkEmail" type="checkbox">
-                        </label>
-                        <label> Nome dos autores
-                            <input id="checkNameAuthor" type="checkbox">
-                        </label>
-                    </div>
-                    <div class="col-md-auto d-flex flex-column justify-content-start">
-                        <label>Nome do GDT
-                            <input id="checkNameGDT" type="checkbox">
-                        </label>
-                        <label> Ano
-                            <input id="checkYear" type="checkbox">
-                        </label>
-                        <label> Mês
-                            <input id="checkMonth" type="checkbox">
-                        </label>
-                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 border py-2 text-center"></div>
+                    <div class="col border py-2">Joelton D. Junior</div>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="container-fluid d-grid my-2" id="output">
-    </div>
 
     <script src="client.js" charset="utf-8"></script>
 </body>
